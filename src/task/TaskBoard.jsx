@@ -43,10 +43,19 @@ function TaskBoard() {
     }
 
     function  handleFavourite(taskId){
-        const taskIndex = tasks.findIndex(task=>task.id===taskId)
-        const newTasks = [...tasks];
-        newTasks[taskIndex].isFavourite = !newTasks[taskIndex].isFavourite
-        setTasks(newTasks)
+        // This code has an issue with shallow copying, find it
+        // const taskIndex = tasks.findIndex(task=>task.id===taskId)
+        // const newTasks = [...tasks];
+        // newTasks[taskIndex].isFavourite = !newTasks[taskIndex].isFavourite
+        // setTasks(newTasks)
+
+        setTasks(tasks.map((task) => {
+            if (task.id === taskId) {
+                return {...task, isFavourite: !task.isFavourite};
+            } else {
+                return task;
+            }
+        }))
     }
 
     function handleDeleteTask(taskId){
@@ -54,6 +63,16 @@ function TaskBoard() {
         setTasks(tasksAfterDelete);
     }
 
+    function handleSearch(searchTerm) {
+        console.log(searchTerm);
+
+        const filtered = tasks.filter((task) =>
+            task.title.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        setTasks([...filtered]);
+
+    }
     return (
         <section className="mb-20" id="tasks">
             {showAddModal && <AddTaskModal onSave={handleAddTask} onClose={handleCloseModal} taskToUpdate={taskToUpdate}></AddTaskModal>}
@@ -61,7 +80,7 @@ function TaskBoard() {
             <div className="container">
                 {/* Search Box */}
                 <div className="p-2 flex justify-end">
-                    <SearchTask></SearchTask>
+                    <SearchTask onSearch={handleSearch}></SearchTask>
                 </div>
                 {/* Task List */}
                 <div className="rounded-xl border border-[rgba(206,206,206,0.12)] bg-[#1D212B] px-6 py-8 md:px-9 md:py-16">
