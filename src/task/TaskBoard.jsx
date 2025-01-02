@@ -9,10 +9,14 @@ function TaskBoard() {
         "title": "Learn React",
         "description": "I want to learn react.",
         "tags": ["web", "react", "js"],
-        "priority": "high",
+        "priority": "High",
         "isFavourite": true
     }
     const [tasks, setTasks] = useState([defaultTask]);
+
+    function handleAddTask(){
+        console.log("Add clicked!")
+    }
     return (
         <section className="mb-20" id="tasks">
             <div className="container">
@@ -22,7 +26,7 @@ function TaskBoard() {
                 </div>
                 {/* Task List */}
                 <div className="rounded-xl border border-[rgba(206,206,206,0.12)] bg-[#1D212B] px-6 py-8 md:px-9 md:py-16">
-                    <TaskAction></TaskAction>
+                    <TaskAction onAddClick={handleAddTask}></TaskAction>
                     <TaskList tasks={tasks}></TaskList>
                 </div>
             </div>
